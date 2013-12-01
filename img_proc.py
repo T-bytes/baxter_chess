@@ -61,16 +61,11 @@ from baxter_msgs.msg import (
     CameraControl,)
 
 def test_menu():
-	#haarFace = cv.Load('haarcascade_frontalface_alt.xml')
-	#video_test='/home/mabl/Videos/TestVideo.mp4'
-	#capture = cv.CaptureFromFile(video_test)
 	n=NAV.Navigator('right')
 	cameraName='right_hand_camera'
-	#surface= cv.LoadImage('Blank-Face.jpg', cv.CV_LOAD_IMAGE_COLOR)
-	#surfaceBlood= cv.LoadImage('Blank-Face_1.jpg', cv.CV_LOAD_IMAGE_COLOR)
-	
+
 	gui_pub = rospy.Publisher('/sdk/xdisplay', sensor_msgs.msg.Image, latch=True)
-	#storage = cv.CreateMemStorage()
+	
 	cam = baxter_interface.CameraController(cameraName)
 	res = (960,600)
 	cam.close()
@@ -79,32 +74,12 @@ def test_menu():
 	action = None
 	rs = baxter_interface.RobotEnable()
 	
-	#cv.Ellipse(surface,rightEye,(majorA,minorA),0,0,360,cv.RGB(255,0,0),1)
-	#cv.Ellipse(surface,leftEye,(majorA,minorA),0,0,360,cv.RGB(255,0,0),1)
-	
-	#tempCamH= DisplayControl.DisplayControl('head_camera')
-	#tempCamH.closeCamera()
-	#tempCamR = DisplayControl.DisplayControl('right_hand_camera')
-	#tempCamH.closeCamera()
-	#tempCamL = DisplayControl.DisplayControl('left_hand_camera')
-	#tempCamH.closeCamera()		
 	capture = DisplayControl.DisplayControl(cameraName)
 	largeFrame = cv.CreateImage((1024,600),cv.IPL_DEPTH_8U, 3)
 	imcolor = cv.CreateImage((1024,600),cv.IPL_DEPTH_8U, 3)
 	hsvC = cv.CreateImage((1024,600),cv.IPL_DEPTH_8U, 3)
 	hsvN=np.asarray(hsvC[:,:])
 	gray= cv.CreateImage((1024,600),cv.IPL_DEPTH_8U, 1)
-	#rightEye=(405,233)
-	#leftEye=(660,240)
-	#majorA=10
-	#minorA=10
-	
-	#cv.Resize(surfaceBlood, largeFrame, cv.CV_INTER_LINEAR)
-	#zombieHungry = cv.CloneImage(largeFrame)
-	#cv.Resize(surface, largeFrame, cv.CV_INTER_LINEAR)
-	#zombie = cv.CloneImage(largeFrame)
-	#cv.Ellipse(largeFrame,rightEye,(majorA,minorA),0,0,360,cv.RGB(255,0,0),-1)
-	#cv.Ellipse(largeFrame,leftEye,(majorA,minorA),0,0,360,cv.RGB(255,0,0),-1)
 	
 	capture.openCamera()
 	rospy.sleep(2)
@@ -116,7 +91,7 @@ def test_menu():
 	#msg=cv_bridge.CvBridge().cv_to_imgmsg(largeFrame,"bgr8")
 	#gui_pub.publish(msg)
 	rospy.Rate(1).sleep()
-	#test_playback('zombie.csv')
+
 	rs.enable()
 	while(n.button0 == False):
 		
@@ -154,91 +129,8 @@ def test_menu():
 		gui_pub.publish(msg)
 		#cv.ShowImage('Chess',hsvC)
 		
-		#test_playback('zombieMove.csv')
-		
 	#rs.disable()
-	
-def moveEyes(pub_gui,zombieImage,origImage,leftx,lefty,detectFaces):
-	for face in detectFaces:
-		zombieImage=cv.CloneImage(origImage)
-		if leftx==0:
-			leftx=660
-			lefty= 240
-		else :
-			leftx = 660 + int((face[0][0] - 660)*0.1)
-			lefty = 240 + int(0.1*(face[0][1]-240))
-				#width = face[0][2]
-		cv.Ellipse(zombieImage,(leftx,lefty),(10,10),0,0,360,cv.RGB(255,0,0),-1)
-		cv.Ellipse(zombieImage,(leftx-255,lefty-6),(10,10),0,0,360,cv.RGB(255,0,0),-1)
-				#cv.Rectangle(imcolor,(face[0][0],face[0][1]),(face[0][0]+face[0][2],face[0][1]+face[0][3]),cv.RGB(155, 255, 25),2)
-		
-		msg = cv_bridge.CvBridge().cv_to_imgmsg(zombieImage, "bgr8")
-		pub_gui.publish(msg)
-	return leftx,lefty
-	rospy.Rate(1).sleep()
 
-def test_playback(name):
-	left = baxter_interface.Limb('left')
-	right = baxter_interface.Limb('right')
-	grip_left = baxter_interface.Gripper('left')
-	grip_right = baxter_interface.Gripper('right')
-	loops =1
-			
-	print("Getting robot state... ")
-	rs = baxter_interface.RobotEnable()
-	print("Enabling robot... ")
-	rs.enable()
-	rospy.sleep(3)
-	path='/home/mabl/git/sdk-examples/baxter/examples/joint_position/src/playback/'
-	filename = path+name
-	n=NAV.Navigator('right')
-	rate = rospy.Rate(100)
-	start_time = rospy.get_time()
-	print("Playing back: %s" % (filename,))
-		
-	with open(filename, 'r') as f:
-		lines = f.readlines()
-	keys = lines[0].rstrip().split(',')
-	i = 0
-	l = 0
-	rospy.Rate(10).sleep()
-	while loops < 1 or l < loops:
-		l=l+1
-		
-		md_start, lcmd_start, rcmd_start, raw_start = clean_line(lines[1], keys)
-		left.move_to_joint_positions(lcmd_start)
-		right.move_to_joint_positions(rcmd_start)
-		for values in lines[1:]:
-			i = i +1
-			loopstr = str(loops) if loops > 0 else "forever"
-			sys.stdout.write("\r Record %d of %d, loop %d of %s" \
-				% (i, len(lines)-1,l,loopstr))
-			sys.stdout.flush()
-			cmd, lcmd, rcmd, values = clean_line(values, keys)
-			while (rospy.get_time() - start_time) < values[0] :
-			
-				if rospy.is_shutdown():
-					print("\n ROS shutdown")
-					#sys.exit(0)
-				
-				if (n.button2==True)or(n.button1==True)or(n.button0==True):
-					print("\n stopped")
-					#rs.disable()
-					return False
-				if len(lcmd):
-					left.set_joint_positions(lcmd)
-					            
-				if len(rcmd):
-					right.set_joint_positions(rcmd)
-					
-				if 'left_gripper' in cmd:
-					grip_left.set_position(cmd['left_gripper'])
-				if 'right_gripper' in cmd:
-					grip_right.set_position(cmd['right_gripper'])
-			rate.sleep()
-	return True
-	#rs.disable()
-	
 def clean_line(line, names):
 	
 		#convert the line of strings to a float or None
@@ -254,19 +146,12 @@ def clean_line(line, names):
 	right_command = dict((key, command[key]) for key in command.keys() \
 		if key[:-2] == 'right_')
 	return (command, left_command, right_command, line)
-	
 		
 def try_float(x):
 	try:
 		return float(x)
 	except ValueError:
 		return None
-				
-		
-			
-
-	
-			
 
 if __name__ == '__main__':
 	rospy.init_node('MABL_GUI', anonymous=True)
