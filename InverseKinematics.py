@@ -32,6 +32,8 @@ Baxter RSDK Inverse Kinematics Example:
  A simple python example of using the Rethink IK
  to get the joint angles for a Cartesian Pose or
  to just check if a pose is valid/possible.
+ 
+ Adapted for Baxter Chess.
 
 """
 import argparse
