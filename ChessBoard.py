@@ -14,13 +14,13 @@ import string
 class ChessBoard:
 	def __init__(self,setupType=0):
 		self.squares = [['e','e','e','e','e','e','e','e'],\
-						['e','e','e','e','e','e','e','e'],\
-						['e','e','e','e','e','e','e','e'],\
-						['e','e','e','e','e','e','e','e'],\
-						['e','e','e','e','e','e','e','e'],\
-						['e','e','e','e','e','e','e','e'],\
-						['e','e','e','e','e','e','e','e'],\
-						['e','e','e','e','e','e','e','e']]
+				['e','e','e','e','e','e','e','e'],\
+				['e','e','e','e','e','e','e','e'],\
+				['e','e','e','e','e','e','e','e'],\
+				['e','e','e','e','e','e','e','e'],\
+				['e','e','e','e','e','e','e','e'],\
+				['e','e','e','e','e','e','e','e'],\
+				['e','e','e','e','e','e','e','e']]
 						
 		if setupType == 0:
 			self.squares[0] = ['bR','bT','bB','bQ','bK','bB','bT','bR']
@@ -31,40 +31,6 @@ class ChessBoard:
 			self.squares[5] = ['e','e','e','e','e','e','e','e']
 			self.squares[6] = ['wP','wP','wP','wP','wP','wP','wP','wP']
 			self.squares[7] = ['wR','wT','wB','wQ','wK','wB','wT','wR']
-
-		#Debugging set-ups
-		#Testing IsLegalMove
-		if setupType == 1:
-			self.squares[0] = ['bR','bT','bB','bQ','bK','bB','bT','bR']
-			self.squares[1] = ['e','e','e','e','e','e','e','e']
-			self.squares[2] = ['e','e','e','e','e','e','e','e']
-			self.squares[3] = ['e','e','e','e','e','e','e','e']
-			self.squares[4] = ['e','e','e','e','e','e','e','e']
-			self.squares[5] = ['e','e','e','e','e','e','e','e']
-			self.squares[6] = ['wP','wP','wP','wP','wP','wP','wP','wP']
-			self.squares[7] = ['wR','wT','wB','wQ','wK','wB','wT','wR']
-
-		#Testing IsInCheck, Checkmate
-		if setupType == 2:
-			self.squares[0] = ['e','e','e','e','e','e','e','e']
-			self.squares[1] = ['e','e','e','e','e','e','e','e']
-			self.squares[2] = ['e','e','e','e','bK','e','e','e']
-			self.squares[3] = ['e','e','e','e','bR','e','e','e']
-			self.squares[4] = ['e','e','bB','e','e','e','wR','e']
-			self.squares[5] = ['e','e','e','e','e','e','e','e']
-			self.squares[6] = ['wB','e','e','e','e','e','e','e']
-			self.squares[7] = ['e','e','e','wK','wQ','e','wT','e']
-
-		#Testing Defensive AI
-		if setupType == 3:
-			self.squares[0] = ['e','e','e','e','e','e','e','e']
-			self.squares[1] = ['e','e','e','e','e','e','e','e']
-			self.squares[2] = ['e','e','e','e','bK','e','e','e']
-			self.squares[3] = ['e','e','e','e','bR','e','e','e']
-			self.squares[4] = ['e','e','bB','e','e','e','wR','e']
-			self.squares[5] = ['e','e','e','e','e','e','e','e']
-			self.squares[6] = ['e','e','e','e','e','e','e','e']
-			self.squares[7] = ['e','e','e','wK','wQ','e','wT','e']			
 			
 	def GetState(self):
 		return self.squares
@@ -89,17 +55,24 @@ class ChessBoard:
 	
 	def ConvertToAlgebraicNotation_row(self,row):
 		#(row,col) format used in Python Chess code starts at (0,0) in the upper left.
-		#Algebraic notation starts in the lower left and uses "a..h" for the column.	
+		#Algebraic notation starts in the lower left and uses "1..8" for the row.	
 		B = ['8','7','6','5','4','3','2','1']
 		return B[row]
+		
+	def GetCartesian_row(self,row):
+		Y = [0.145, 0.107, 0.066, 0.024, -0.021, -0.068, -0.113, -0.153]
+		return Y[row]
 		
 	def ConvertToAlgebraicNotation_col(self,col):
 		#(row,col) format used in Python Chess code starts at (0,0) in the upper left.
 		#Algebraic notation starts in the lower left and uses "a..h" for the column.	
 		A = ['a','b','c','d','e','f','g','h']
 		return A[col]
-
 		
+	def GetCartesian_col(self,row):
+		X = [0.653, 0.614, 0.567, 0.520, 0.467, 0.415, 0.366, 0.322]
+		return X[row]	
+	
 	def GetFullString(self,p):
 		if 'b' in p:
 			name = "black "
