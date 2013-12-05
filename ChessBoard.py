@@ -100,6 +100,10 @@ class ChessBoard:
 		toSquare_r = moveTuple[1][0]
 		toSquare_c = moveTuple[1][1]
 		
+		#Give initial Cartesian coordinates to Baxter using fromSquare row and columns
+		
+		#Give final Cartesian coordinates to Baxter using toSquare row and columns
+		
 		#Assign square positions for from and to pieces
 		fromPiece = self.squares[fromSquare_r][fromSquare_c]
 		toPiece = self.squares[toSquare_r][toSquare_c]
