@@ -165,9 +165,10 @@ if __name__ == '__main__':
 	# =======================
 	# TEST INVERSE KINEMATICS
 	# =======================
-	
+	"""
 	for i in xrange(0, 4):
 		
 		moveArmLoc('right', 0.322, -0.153, -0.275)
 		moveArmLoc('right', 0.366, -0.153, -0.275)
 		moveArmLoc('right', 0.415, -0.153, -0.275)
+	"""
