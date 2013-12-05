@@ -104,7 +104,7 @@ def test_menu():
 		im=cv2.flip(im,1)
 		hsvA=cv2.flip(hsvA,1)
 
-		       
+		#Find object contours and get centroid cartesian positions       
 		contours,hierarchy= cv2.findContours(hsvA,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 		tempIm=im.copy()
 		for cnt in contours:
@@ -112,6 +112,7 @@ def test_menu():
 			print M
 			centroid_x = int(M['m10']/M['m00'])
 			centroid_y = int(M['m01']/M['m00'])
+			#Draw circle about centroids
 			cv2.circle(tempIm, (centroid_x, centroid_y), 20, (0,255,255), 10)
 		
 		imOrig=cv2.add(imOrig,tempIm)
