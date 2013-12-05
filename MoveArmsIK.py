@@ -159,7 +159,7 @@ if __name__ == '__main__':
 	print("End effector position:")
 	if (limb == 'left'):
 		print(left.endpoint_pose())
-	if (limb == 'right'):
+	else:
 		print(right.endpoint_pose())
 	
 	# =======================
