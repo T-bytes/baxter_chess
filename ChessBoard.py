@@ -69,9 +69,9 @@ class ChessBoard:
 		A = ['a','b','c','d','e','f','g','h']
 		return A[col]
 		
-	def GetCartesian_col(self,row):
+	def GetCartesian_col(self,col):
 		X = [0.653, 0.614, 0.567, 0.520, 0.467, 0.415, 0.366, 0.322]
-		return X[row]	
+		return X[col]	
 	
 	def GetFullString(self,p):
 		if 'b' in p:
@@ -99,10 +99,12 @@ class ChessBoard:
 		fromSquare_c = moveTuple[0][1]
 		toSquare_r = moveTuple[1][0]
 		toSquare_c = moveTuple[1][1]
-
+		
+		#Assign square positions for from and to pieces
 		fromPiece = self.squares[fromSquare_r][fromSquare_c]
 		toPiece = self.squares[toSquare_r][toSquare_c]
-
+		
+		#Move piece by changing square locations
 		self.squares[toSquare_r][toSquare_c] = fromPiece
 		self.squares[fromSquare_r][fromSquare_c] = 'e'
 
@@ -112,6 +114,7 @@ class ChessBoard:
 		if toPiece == 'e':
 			messageString = fromPiece_fullString+ " moves from "+self.ConvertToAlgebraicNotation(moveTuple[0])+\
 						    " to "+self.ConvertToAlgebraicNotation(moveTuple[1])
+			
 		else:
 			messageString = fromPiece_fullString+ " from "+self.ConvertToAlgebraicNotation(moveTuple[0])+\
 						" captures "+toPiece_fullString+" at "+self.ConvertToAlgebraicNotation(moveTuple[1])+"!"
