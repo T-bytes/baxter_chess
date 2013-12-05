@@ -102,7 +102,9 @@ class ChessBoard:
 		
 		#Give initial Cartesian coordinates to Baxter using fromSquare row and columns
 		
+		
 		#Give final Cartesian coordinates to Baxter using toSquare row and columns
+		
 		
 		#Assign square positions for from and to pieces
 		fromPiece = self.squares[fromSquare_r][fromSquare_c]
