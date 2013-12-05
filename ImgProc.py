@@ -103,6 +103,12 @@ def findPiece():
 		imOrig=im.copy()
 		im=cv2.flip(im,1)
 		hsvA=cv2.flip(hsvA,1)
+		
+		#Apply filters
+		im = cv2.blur(im, (self.Vars["smooth"], self.Vars["smooth"]))
+		filter_ = self.filterColors(im)
+		filter_ = cv2.erode(filter_,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(self.Vars["erode"], self.Vars["erode"])))
+		filter_ = cv2.dilate(filter_,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(self.Vars["dilate"], self.Vars["dilate"])))
 
 		#Find object contours and get centroid cartesian positions       
 		contours,hierarchy= cv2.findContours(hsvA,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
@@ -135,6 +141,14 @@ def findPiece():
 		#cv.ShowImage('Chess',hsvC)
 		
 	#rs.disable()
+
+def filterColors(self, im):
+	UPPER = np.array([self.Vars["upper"], self.Vars["filterUpS"], self.Vars["filterUpV"]], np.uint8)
+	LOWER = np.array([self.Vars["lower"], self.Vars["filterDownS"], self.Vars["filterDownV"]], np.uint8)
+	hsv_im = cv2.cvtColor(im, cv2.COLOR_BGR2HSV)
+	filter_im = cv2.inRange(hsv_im, LOWER, UPPER)
+	return filter_im
+	rospy.Rate(1).sleep()
 
 def clean_line(line, names):
 	
