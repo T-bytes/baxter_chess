@@ -10,6 +10,12 @@
  """
  
 import string
+import roslib
+roslib.load_manifest('joint_position')
+import rospy
+import baxter_interface
+import iodevices
+
 from MoveArmsIK import moveArmLoc
 #from ImgProc import ...
 
@@ -97,10 +103,18 @@ class ChessBoard:
 		return name
 	
 	def MovePiece(self,moveTuple):
+		#Square variables
 		fromSquare_r = moveTuple[0][0]
 		fromSquare_c = moveTuple[0][1]
 		toSquare_r = moveTuple[1][0]
 		toSquare_c = moveTuple[1][1]
+		
+		#Gripper and arm initializations
+		grip_right = baxter_interface.Gripper('right')
+        	right = baxter_interface.Limb('right')
+        	right.move_to_neutral()
+		grip_right.calibrate
+		grip_right.open
 		
 		#Give initial Cartesian coordinates to Baxter using fromSquare row and columns
 		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.275)
@@ -109,13 +123,13 @@ class ChessBoard:
 		
 		
 		#Pick up piece
-		
+		grip_right.close
 		
 		#Give final Cartesian coordinates to Baxter using toSquare row and columns
 		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.275)
 		
 		#Drop piece
-		
+		grip_right.open
 		
 		#Assign square positions for from and to pieces
 		fromPiece = self.squares[fromSquare_r][fromSquare_c]
