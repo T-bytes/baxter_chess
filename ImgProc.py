@@ -60,7 +60,7 @@ from baxter_msgs.msg import (
     CameraSettings,
     CameraControl,)
 
-def test_menu():
+def findPiece():
 	n=NAV.Navigator('right')
 	cameraName='right_hand_camera'
 
@@ -69,7 +69,7 @@ def test_menu():
 	cam = baxter_interface.CameraController(cameraName)
 	res = (960,600)
 	cam.close()
-	cam.resolution =res
+	cam.resolution = res
 	cam.open()
 	action = None
 	rs = baxter_interface.RobotEnable()
@@ -110,10 +110,14 @@ def test_menu():
 		for cnt in contours:
 			M = cv.moments(cnt)
 			print M
+			#Identify centroid Cartesian coordinates
 			centroid_x = int(M['m10']/M['m00'])
 			centroid_y = int(M['m01']/M['m00'])
 			#Draw circle about centroids
 			cv2.circle(tempIm, (centroid_x, centroid_y), 20, (0,255,255), 10)
+			
+		#Send centroid location to Baxter arm for repositioning
+		
 		
 		imOrig=cv2.add(imOrig,tempIm)
 		h, w = self.imOrig.shape[:2]
@@ -156,7 +160,4 @@ def try_float(x):
 
 if __name__ == '__main__':
 	rospy.init_node('MABL_GUI', anonymous=True)
-	#pygame.init()
-	#Thread(target=test_playback,args=('zombie.csv',)).start()
-	#test_playback('zombie.csv')
-	test_menu()
+	findPiece()
