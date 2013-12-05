@@ -10,6 +10,8 @@
  """
  
 import string
+from MoveArmsIK import moveArmLoc
+#from ImgProc import ...
 
 class ChessBoard:
 	def __init__(self,setupType=0):
@@ -101,9 +103,18 @@ class ChessBoard:
 		toSquare_c = moveTuple[1][1]
 		
 		#Give initial Cartesian coordinates to Baxter using fromSquare row and columns
+		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.275)
+		
+		#Turn on camera and center on piece
+		
+		
+		#Pick up piece
 		
 		
 		#Give final Cartesian coordinates to Baxter using toSquare row and columns
+		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.275)
+		
+		#Drop piece
 		
 		
 		#Assign square positions for from and to pieces
