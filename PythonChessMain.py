@@ -7,6 +7,8 @@
 	board and pieces and to get user mouse clicks.  Run with the "-h" option 
 	to get full listing of available command line flags.  
 	
+ Note: 	Edited by Trevor Sands for EEEE 585, Rochester Institute of Technology
+	
  Copyright (C) 2009 Steve Osborne, srosborne (at) gmail.com
  http://yakinikuman.wordpress.com/
  *******
@@ -66,9 +68,10 @@ from ChessBoard import ChessBoard
 from ChessAI import ChessAI_random, ChessAI_defense, ChessAI_offense
 from ChessPlayer import ChessPlayer
 from ChessGUI_text import ChessGUI_text
-from ChessGUI_pygame import ChessGUI_pygame
+#from ChessGUI_pygame import ChessGUI_pygame
 from ChessRules import ChessRules
 from ChessGameParams import TkinterGameSetupParams
+#from BaxterControl import ...
 
 from optparse import OptionParser
 import time
@@ -79,7 +82,7 @@ class PythonChessMain:
 			self.Board = ChessBoard(2)
 			self.debugMode = True
 		else:
-			self.Board = ChessBoard(0)#0 for normal board setup; see ChessBoard class for other options (for testing purposes)
+			self.Board = ChessBoard(0) #0 for normal board setup; see ChessBoard class for other options (for testing purposes)
 			self.debugMode = False
 
 		self.Rules = ChessRules()
