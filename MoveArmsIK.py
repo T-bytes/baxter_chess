@@ -27,6 +27,21 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+"""------------------------------------------------------------------------
+File:	MoveArmsIK.py
+
+Author:	Ryan Selig
+	Trevor Sands
+	for EEEE 585, Rochester Institute of Technology
+
+Date:	December 7, 2013
+
+Description:
+	Handles the inverse kinematics calculations and arm joint control
+	for Rethink Robotic's Baxter working in Cartesian 3-space.
+	Based off of Inverse Kinematics example in Baxter SDK.
+------------------------------------------------------------------------"""
+
 import argparse
 import sys
 
@@ -161,14 +176,3 @@ if __name__ == '__main__':
 		print(left.endpoint_pose())
 	else:
 		print(right.endpoint_pose())
-	
-	# =======================
-	# TEST INVERSE KINEMATICS
-	# =======================
-	"""
-	for i in xrange(0, 4):
-		
-		moveArmLoc('right', 0.322, -0.153, -0.275)
-		moveArmLoc('right', 0.366, -0.153, -0.275)
-		moveArmLoc('right', 0.415, -0.153, -0.275)
-	"""
