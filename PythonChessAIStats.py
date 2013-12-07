@@ -10,6 +10,11 @@
 	
  Copyright (C) 2009 Steve Osborne, srosborne (at) gmail.com
  http://yakinikuman.wordpress.com/
+ 
+ Edited by:
+ 	Trevor Sands for EEEE 585, Rochester Institute of Technology under GNU License
+ 	December 7, 2013
+ 	
  *******
  This program is free software; you can redistribute it and/or modify 
  it under the terms of the GNU General Public License as published by 
