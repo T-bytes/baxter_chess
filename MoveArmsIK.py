@@ -180,9 +180,11 @@ if __name__ == '__main__':
 	Z = -0.275
 	
 	#Test inverse kinematics across chessboard
-	for i in range(0, 8):
-		moveArmLoc('right', X[i], Y[i], Z)
-		print("End effector positions:")
-		print(getEndPointLoc('right'))
-		
+	for i in range(4, 8):
+		for j in range(4, 8):
+			moveArmLoc('right', X[i], Y[j], Z)
+			print("End effector positions:")
+			print(getEndPointLoc('right'))
+	
+	print("Disabling robot... ")	
 	rs.disable()
