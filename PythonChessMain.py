@@ -7,10 +7,13 @@
 	board and pieces and to get user mouse clicks.  Run with the "-h" option 
 	to get full listing of available command line flags.  
 	
- Note: 	Edited by Trevor Sands for EEEE 585, Rochester Institute of Technology
-	
  Copyright (C) 2009 Steve Osborne, srosborne (at) gmail.com
  http://yakinikuman.wordpress.com/
+ 
+ Edited by:
+ 	Trevor Sands for EEEE 585, Rochester Institute of Technology under GNU GPL
+ 	December 7, 2013
+ 	
  *******
  This program is free software; you can redistribute it and/or modify 
  it under the terms of the GNU General Public License as published by 
@@ -27,6 +30,8 @@
 
  *******
  Version history:
+ 
+ v 0.7.1 - December 7 2013. Adapted for EEEE 585, Rochester Institute of Technology
 
  v 0.7 - 27 April 2009.  Dramatically lowered CPU usage by using 
    "pygame.event.wait()" rather than "pygame.event.get()" in
