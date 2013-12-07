@@ -118,7 +118,7 @@ def inverse_kinematics(limb, x_p, y_p, z_p, x_o, y_o, z_o, w_o):
 		# print("INVALID POSE - No Valid Joint Solution Found.")
 		return '0'
 
-def moveArmLoc(limb, x_p, y_p, z_p, x_o = 0.997, y_o = 0.008, z_o = 0.071, w_o = -0.028):
+def moveArmLoc(limb, x_p, y_p, z_p, x_o = -0.037, y_o = 0.999, z_o = -0.015, w_o = -0.010):
 	#Utilizes default vertical orientation for the right arm wrist
 	
 	if (inverse_kinematics(limb, x_p, y_p, z_p, x_o, y_o, z_o, w_o) == '0'):
