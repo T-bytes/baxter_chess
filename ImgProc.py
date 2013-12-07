@@ -27,6 +27,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+import pickle
 import getopt
 import os
 import sys
@@ -63,6 +64,11 @@ from baxter_msgs.msg import (
 def findPiece():
 	n=NAV.Navigator('right')
 	cameraName='right_hand_camera'
+	
+	try: self.Vars = pickle.load(open("cam.config", "r"))
+	except:
+		print "Config file (.config) not found."
+                exit()
 
 	gui_pub = rospy.Publisher('/sdk/xdisplay', sensor_msgs.msg.Image, latch=True)
 	
@@ -93,6 +99,7 @@ def findPiece():
 	rospy.Rate(1).sleep()
 
 	rs.enable()
+	
 	while(n.button0 == False):
 		
 		frame=capture.getFrame()
