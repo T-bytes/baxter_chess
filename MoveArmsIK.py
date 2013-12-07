@@ -174,3 +174,15 @@ if __name__ == '__main__':
 	
 	left.move_to_neutral()
 	right.move_to_neutral()
+	
+	X = [0.653, 0.614, 0.567, 0.520, 0.467, 0.415, 0.366, 0.322]
+	Y = [0.145, 0.107, 0.066, 0.024, -0.021, -0.068, -0.113, -0.153]
+	Z = -0.275
+	
+	#Test inverse kinematics across chessboard
+	for i in range(0, 8):
+		moveArmLoc('right', X[i], Y[i], Z)
+		print("End effector positions:")
+		print(getEndPointLoc('right'))
+		
+	rs.disable()
