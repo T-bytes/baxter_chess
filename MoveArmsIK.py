@@ -119,10 +119,7 @@ def inverse_kinematics(limb, x_p, y_p, z_p, x_o, y_o, z_o, w_o):
 		return '0'
 
 def moveArmLoc(limb, x_p, y_p, z_p, x_o = 0.694, y_o = 0.717, z_o = -0.041, w_o = 0.0307):
-	"""
-	Move left or right arm (limb) to specified location
-	The last four numbers default to a vertical end effector orientation
-	"""
+	#Utilizes default vertical orientation for the right arm wrist
 	
 	if (inverse_kinematics(limb, x_p, y_p, z_p, x_o, y_o, z_o, w_o) == '0'):
 		print("Invalid coordinates specified:")
@@ -132,6 +129,14 @@ def moveArmLoc(limb, x_p, y_p, z_p, x_o = 0.694, y_o = 0.717, z_o = -0.041, w_o 
 			left.move_to_joint_positions(inverse_kinematics(limb, x_p, y_p, z_p, x_o, y_o, z_o, w_o))
 		if (limb == 'right'):
 			right.move_to_joint_positions(inverse_kinematics(limb, x_p, y_p, z_p, x_o, y_o, z_o, w_o))
+			
+def getEndPointLoc(limb):
+	if (limb == 'left'):
+		left.endpoint_pose()
+	if (limb == 'right'):
+		right.endpoint_pose()
+	else:
+		print("Invalid limb specified!")
 		
 if __name__ == '__main__':
 	
@@ -169,10 +174,3 @@ if __name__ == '__main__':
 	
 	left.move_to_neutral()
 	right.move_to_neutral()
-	
-	# Print end effector position and orientation
-	print("End effector position:")
-	if (limb == 'left'):
-		print(left.endpoint_pose())
-	else:
-		print(right.endpoint_pose())
