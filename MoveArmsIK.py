@@ -48,7 +48,9 @@ import sys
 import roslib
 roslib.load_manifest('joint_position')
 roslib.load_manifest('inverse_kinematics')
+roslib.load_manifest('gripper_control')
 import rospy
+#import time
 
 import baxter_interface
 import iodevices
@@ -174,6 +176,11 @@ if __name__ == '__main__':
 	
 	left.move_to_neutral()
 	right.move_to_neutral()
+	grip_right = baxter_interface.Gripper('right')
+        right = baxter_interface.Limb('right')
+	grip_right.calibrate()
+	grip_right.open()
+	
 	
 	X = [0.653, 0.614, 0.567, 0.520, 0.467, 0.415, 0.366, 0.322]
 	Y = [0.145, 0.107, 0.066, 0.024, -0.021, -0.068, -0.113, -0.153]
@@ -182,11 +189,16 @@ if __name__ == '__main__':
 	#Test inverse kinematics across chessboard
 	for i in range(0, 8):
 		for j in range(0, 8):
+			grip_right.open()
+			#time.sleep(1)
 			moveArmLoc('right', X[i], Y[j], Z)
 			print("End effector positions:")
 			print(getEndPointLoc('right'))
+			grip_right.close()
+			#time.sleep(1)
 	
 	left.move_to_neutral()
 	right.move_to_neutral()
+	grip_right.open()
 	print("Disabling robot... ")	
 	rs.disable()
