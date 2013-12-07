@@ -8,7 +8,7 @@
  http://yakinikuman.wordpress.com/
  
  Edited by:
- 	Trevor Sands for EEEE 585, Rochester Institute of Technology under GNU License
+ 	Trevor Sands for EEEE 585, Rochester Institute of Technology under GNU GPL
  	December 7, 2013
  """
  
