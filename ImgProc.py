@@ -27,6 +27,21 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+"""------------------------------------------------------------------------
+File:	MoveArmsIK.py
+
+Author:	Trevor Sands
+	for EEEE 585, Rochester Institute of Technology
+	based on code from Shitij Kumar, Rochester Institute of Technology
+
+Date:	December 7, 2013
+
+Description:
+	Contains rudimentary image-processing code for dectecting chess
+	pieces on the board workspace and sends centroid positions to
+	inverse kinematics subroutines for arm repositioning.
+------------------------------------------------------------------------"""
+
 import pickle
 import getopt
 import os
@@ -61,14 +76,14 @@ from baxter_msgs.msg import (
     CameraSettings,
     CameraControl,)
 
-def findPiece():
+def findPiece(self, color):
 	n=NAV.Navigator('right')
 	cameraName='right_hand_camera'
 	
-	try: self.Vars = pickle.load(open("cam.config", "r"))
-	except:
-		print "Config file (.config) not found."
-                exit()
+	#try: self.Vars = pickle.load(open("cam.config", "r"))
+	#except:
+		#print "Config file (.config) not found."
+                #exit()
 
 	gui_pub = rospy.Publisher('/sdk/xdisplay', sensor_msgs.msg.Image, latch=True)
 	
@@ -97,8 +112,6 @@ def findPiece():
 	#msg=cv_bridge.CvBridge().cv_to_imgmsg(largeFrame,"bgr8")
 	#gui_pub.publish(msg)
 	rospy.Rate(1).sleep()
-
-	rs.enable()
 	
 	while(n.button0 == False):
 		
@@ -146,10 +159,8 @@ def findPiece():
 		msg = cv_bridge.CvBridge().cv_to_imgmsg(imgO, "bgr8")
 		gui_pub.publish(msg)
 		#cv.ShowImage('Chess',hsvC)
-		
-	#rs.disable()
 
-def filterColors(self, im):
+def filterColors(self, im, color):
 	UPPER = np.array([self.Vars["upper"], self.Vars["filterUpS"], self.Vars["filterUpV"]], np.uint8)
 	LOWER = np.array([self.Vars["lower"], self.Vars["filterDownS"], self.Vars["filterDownV"]], np.uint8)
 	hsv_im = cv2.cvtColor(im, cv2.COLOR_BGR2HSV)
@@ -180,5 +191,5 @@ def try_float(x):
 		return None
 
 if __name__ == '__main__':
-	rospy.init_node('MABL_GUI', anonymous=True)
+	rospy.init_node('baxter_chess_piece_detection', anonymous=True)
 	findPiece()
