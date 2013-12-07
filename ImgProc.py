@@ -76,7 +76,7 @@ from baxter_msgs.msg import (
     CameraSettings,
     CameraControl,)
 
-def findPiece(color):
+def findPiece():
 	n=NAV.Navigator('right')
 	cameraName='right_hand_camera'
 	
@@ -92,6 +92,9 @@ def findPiece(color):
 	cam.close()
 	cam.resolution = res
 	cam.open()
+	#cam.white_balance_green(1000)
+	#cam.white_balance_blue(1000)
+	#cam.white_balance_red(1000)
 	action = None
 	rs = baxter_interface.RobotEnable()
 	
@@ -104,7 +107,7 @@ def findPiece(color):
 	
 	capture.openCamera()
 	rospy.sleep(2)
-	#cv.NamedWindow('Chess', cv.CV_WINDOW_AUTOSIZE)
+	cv.NamedWindow('Chess', cv2.CV_WINDOW_AUTOSIZE)
 	#initCamera('head_camera')
 	
 	#leftX=0
@@ -120,22 +123,23 @@ def findPiece(color):
 		cv.CvtColor(imcolor,hsvC,cv.CV_BGR2HSV)
 		hsvA = np.asarray(hsvC[:,:])
 		im = np.asarray(imcolor[:,:])
-		imOrig=im.copy()
+		
 		im=cv2.flip(im,1)
+		imOrig=im.copy()
 		hsvA=cv2.flip(hsvA,1)
 		
 		#Apply filters
-		im = cv2.blur(im, (self.Vars["smooth"], self.Vars["smooth"]))
-		filter_ = self.filterColors(im)
-		filter_ = cv2.erode(filter_,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(self.Vars["erode"], self.Vars["erode"])))
-		filter_ = cv2.dilate(filter_,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(self.Vars["dilate"], self.Vars["dilate"])))
+		im = cv2.blur(im, (23, 23))
+		filter_ = filterColors(hsvA)
+		filter_ = cv2.erode(filter_,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(8, 8)))
+		filter_ = cv2.dilate(filter_,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(6, 6)))
 
 		#Find object contours and get centroid cartesian positions       
-		contours,hierarchy= cv2.findContours(hsvA,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+		contours,hierarchy= cv2.findContours(filter_,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 		tempIm=im.copy()
 		for cnt in contours:
-			M = cv.moments(cnt)
-			print M
+			M = cv2.moments(cnt)
+			#print M
 			#Identify centroid Cartesian coordinates
 			centroid_x = int(M['m10']/M['m00'])
 			centroid_y = int(M['m01']/M['m00'])
@@ -146,7 +150,7 @@ def findPiece(color):
 		
 		
 		imOrig=cv2.add(imOrig,tempIm)
-		h, w = self.imOrig.shape[:2]
+		h, w = imOrig.shape[:2]
 		imgO= cv.CreateMat(h, w, cv.CV_8UC3)
 		np.asarray(imgO)[:,:] = imOrig
 
@@ -158,11 +162,11 @@ def findPiece(color):
 		#imcolor=cv.QueryFrame(capture)
 		msg = cv_bridge.CvBridge().cv_to_imgmsg(imgO, "bgr8")
 		gui_pub.publish(msg)
-		#cv.ShowImage('Chess',hsvC)
+		cv.ShowImage('Chess',imgO)
 
-def filterColors(self, im, color):
-	UPPER = np.array([self.Vars["upper"], self.Vars["filterUpS"], self.Vars["filterUpV"]], np.uint8)
-	LOWER = np.array([self.Vars["lower"], self.Vars["filterDownS"], self.Vars["filterDownV"]], np.uint8)
+def filterColors(im):
+	UPPER = np.array([22, 255, 250], np.uint8)
+	LOWER = np.array([0, 21, 20], np.uint8)
 	hsv_im = cv2.cvtColor(im, cv2.COLOR_BGR2HSV)
 	filter_im = cv2.inRange(hsv_im, LOWER, UPPER)
 	return filter_im
@@ -192,4 +196,4 @@ def try_float(x):
 
 if __name__ == '__main__':
 	rospy.init_node('baxter_chess_piece_detection', anonymous=True)
-	findPiece('white')
+	findPiece()
