@@ -127,12 +127,14 @@ class ChessBoard:
 		
 		
 		#Pick up piece
+		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.33)
 		grip_right.close
 		
 		#Give final Cartesian coordinates to Baxter using toSquare row and columns
 		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.275)
 		
 		#Drop piece
+		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.33)
 		grip_right.open
 		
 		#Assign square positions for from and to pieces
