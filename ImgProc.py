@@ -76,7 +76,7 @@ from baxter_msgs.msg import (
     CameraSettings,
     CameraControl,)
 
-def findPiece(self, color):
+def findPiece(color):
 	n=NAV.Navigator('right')
 	cameraName='right_hand_camera'
 	
@@ -192,4 +192,4 @@ def try_float(x):
 
 if __name__ == '__main__':
 	rospy.init_node('baxter_chess_piece_detection', anonymous=True)
-	findPiece()
+	findPiece('white')
