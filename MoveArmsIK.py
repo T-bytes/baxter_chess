@@ -118,7 +118,7 @@ def inverse_kinematics(limb, x_p, y_p, z_p, x_o, y_o, z_o, w_o):
 		# print("INVALID POSE - No Valid Joint Solution Found.")
 		return '0'
 
-def moveArmLoc(limb, x_p, y_p, z_p, x_o = 0.694, y_o = 0.717, z_o = -0.041, w_o = 0.0307):
+def moveArmLoc(limb, x_p, y_p, z_p, x_o = 0.997, y_o = 0.008, z_o = 0.071, w_o = -0.028):
 	#Utilizes default vertical orientation for the right arm wrist
 	
 	if (inverse_kinematics(limb, x_p, y_p, z_p, x_o, y_o, z_o, w_o) == '0'):
@@ -177,14 +177,16 @@ if __name__ == '__main__':
 	
 	X = [0.653, 0.614, 0.567, 0.520, 0.467, 0.415, 0.366, 0.322]
 	Y = [0.145, 0.107, 0.066, 0.024, -0.021, -0.068, -0.113, -0.153]
-	Z = -0.275
+	Z = -0.25
 	
 	#Test inverse kinematics across chessboard
-	for i in range(4, 8):
-		for j in range(4, 8):
+	for i in range(0, 8):
+		for j in range(0, 8):
 			moveArmLoc('right', X[i], Y[j], Z)
 			print("End effector positions:")
 			print(getEndPointLoc('right'))
 	
+	left.move_to_neutral()
+	right.move_to_neutral()
 	print("Disabling robot... ")	
 	rs.disable()
