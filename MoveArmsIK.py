@@ -177,7 +177,7 @@ if __name__ == '__main__':
 	left.move_to_neutral()
 	right.move_to_neutral()
 	grip_right = baxter_interface.Gripper('right')
-        right = baxter_interface.Limb('right')
+        #right = baxter_interface.Limb('right')
 	grip_right.calibrate()
 	grip_right.open()
 	
