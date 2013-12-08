@@ -165,8 +165,8 @@ def findPiece():
 		cv.ShowImage('Chess',imgO)
 
 def filterColors(im):
-	UPPER = np.array([50, 255, 250], np.uint8)
-	LOWER = np.array([10, 21, 20], np.uint8)
+	UPPER = np.array([140, 255, 251], np.uint8)
+	LOWER = np.array([0, 21, 20], np.uint8)
 	hsv_im = cv2.cvtColor(im, cv2.COLOR_BGR2HSV)
 	filter_im = cv2.inRange(hsv_im, LOWER, UPPER)
 	return filter_im
