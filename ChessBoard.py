@@ -19,6 +19,7 @@ roslib.load_manifest('joint_position')
 import rospy
 import baxter_interface
 import iodevices
+import time
 
 from MoveArmsIK import moveArmLoc
 #from ImgProc import ...
@@ -72,7 +73,7 @@ class ChessBoard:
 		return B[row]
 		
 	def GetCartesian_row(self,row):
-		Y = [0.145, 0.107, 0.066, 0.024, -0.021, -0.068, -0.113, -0.153]
+		Y = [0.156, 0.096, 0.059, 0.024, -0.023, -0.060, -0.112, -0.156]
 		return Y[row]
 		
 	def ConvertToAlgebraicNotation_col(self,col):
@@ -82,7 +83,7 @@ class ChessBoard:
 		return A[col]
 		
 	def GetCartesian_col(self,col):
-		X = [0.653, 0.614, 0.567, 0.520, 0.467, 0.415, 0.366, 0.322]
+		X = [0.642, 0.602, 0.559, 0.511, 0.469, 0.421, 0.363, 0.328]
 		return X[col]	
 	
 	def GetFullString(self,p):
@@ -117,25 +118,33 @@ class ChessBoard:
 		grip_right = baxter_interface.Gripper('right')
         	right = baxter_interface.Limb('right')
         	right.move_to_neutral()
-		grip_right.calibrate
-		grip_right.open
+		grip_right.calibrate()
+		grip_right.open()
 		
 		#Give initial Cartesian coordinates to Baxter using fromSquare row and columns
 		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.275)
+		time.sleep(1)
 		
 		#Turn on camera and center on piece
 		
 		
 		#Pick up piece
 		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.33)
-		grip_right.close
+		time.sleep(1)
+		grip_right.close()
+		time.sleep(1)
 		
 		#Give final Cartesian coordinates to Baxter using toSquare row and columns
 		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.275)
 		
 		#Drop piece
 		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.33)
-		grip_right.open
+		time.sleep(1)
+		grip_right.open()
+		
+		#Return to home position
+		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.275)
+		right.move_to_neutral()
 		
 		#Assign square positions for from and to pieces
 		fromPiece = self.squares[fromSquare_r][fromSquare_c]
