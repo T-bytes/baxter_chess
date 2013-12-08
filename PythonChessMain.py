@@ -76,7 +76,14 @@ from ChessGUI_text import ChessGUI_text
 #from ChessGUI_pygame import ChessGUI_pygame
 from ChessRules import ChessRules
 from ChessGameParams import TkinterGameSetupParams
-#from BaxterControl import ...
+
+import argparse
+import sys
+
+import roslib
+import rospy
+import baxter_interface
+import iodevices
 
 from optparse import OptionParser
 import time
@@ -93,6 +100,15 @@ class PythonChessMain:
 		self.Rules = ChessRules()
 		
 	def SetUp(self,options):
+		
+		#Set up Baxter
+		print("Initializing node... ")
+		rospy.init_node("baxter_chess_main_node")
+		print("Getting robot state... ")
+		rs = baxter_interface.RobotEnable()
+		print("Enabling robot... ")
+		rs.enable()
+		
 		#gameSetupParams: Player 1 and 2 Name, Color, Human/AI level
 		if self.debugMode:
 			player1Name = 'Kasparov'
