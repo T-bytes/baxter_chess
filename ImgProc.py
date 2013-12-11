@@ -28,7 +28,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 """------------------------------------------------------------------------
-File:	MoveArmsIK.py
+File:	ImgProc.py
 
 Author:	Trevor Sands
 	for EEEE 585, Rochester Institute of Technology
@@ -76,7 +76,7 @@ from baxter_msgs.msg import (
     CameraSettings,
     CameraControl,)
 
-def findPiece():
+def initCam():
 	n=NAV.Navigator('right')
 	cameraName='right_hand_camera'
 	
@@ -115,54 +115,7 @@ def findPiece():
 	#msg=cv_bridge.CvBridge().cv_to_imgmsg(largeFrame,"bgr8")
 	#gui_pub.publish(msg)
 	rospy.Rate(1).sleep()
-	
-	while(n.button0 == False):
-		
-		frame=capture.getFrame()
-		cv.Resize(frame, imcolor, cv.CV_INTER_LINEAR)
-		cv.CvtColor(imcolor,hsvC,cv.CV_BGR2HSV)
-		hsvA = np.asarray(hsvC[:,:])
-		im = np.asarray(imcolor[:,:])
-		
-		im=cv2.flip(im,1)
-		imOrig=im.copy()
-		hsvA=cv2.flip(hsvA,1)
-		
-		#Apply filters
-		im = cv2.blur(im, (23, 23))
-		filter_ = filterColors(hsvA)
-		filter_ = cv2.erode(filter_,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(8, 8)))
-		filter_ = cv2.dilate(filter_,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(6, 6)))
 
-		#Find object contours and get centroid cartesian positions       
-		contours,hierarchy= cv2.findContours(filter_,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-		tempIm=im.copy()
-		for cnt in contours:
-			M = cv2.moments(cnt)
-			#print M
-			#Identify centroid Cartesian coordinates
-			centroid_x = int(M['m10']/M['m00'])
-			centroid_y = int(M['m01']/M['m00'])
-			#Draw circle about centroids
-			cv2.circle(tempIm, (centroid_x, centroid_y), 20, (0,255,255), 10)
-			
-		#Send centroid location to Baxter arm for repositioning
-		
-		
-		imOrig=cv2.add(imOrig,tempIm)
-		h, w = imOrig.shape[:2]
-		imgO= cv.CreateMat(h, w, cv.CV_8UC3)
-		np.asarray(imgO)[:,:] = imOrig
-
-		largeFrame=cv.CloneImage(imcolor)
-		cv.CvtColor(largeFrame,hsvC,cv.CV_BGR2HSV)
-		
-		cv.CvtColor(largeFrame,gray,cv.CV_BGR2GRAY)
-		
-		#imcolor=cv.QueryFrame(capture)
-		msg = cv_bridge.CvBridge().cv_to_imgmsg(imgO, "bgr8")
-		gui_pub.publish(msg)
-		cv.ShowImage('Chess',imgO)
 
 def filterColors(im):
 	UPPER = np.array([22, 255, 250], np.uint8)
@@ -171,6 +124,53 @@ def filterColors(im):
 	filter_im = cv2.inRange(hsv_im, LOWER, UPPER)
 	return filter_im
 	rospy.Rate(1).sleep()
+	
+def getContours():
+	frame=capture.getFrame()
+	cv.Resize(frame, imcolor, cv.CV_INTER_LINEAR)
+	cv.CvtColor(imcolor,hsvC,cv.CV_BGR2HSV)
+	hsvA = np.asarray(hsvC[:,:])
+	im = np.asarray(imcolor[:,:])
+		
+	im=cv2.flip(im,1)
+	imOrig=im.copy()
+	hsvA=cv2.flip(hsvA,1)
+		
+	#Apply filters
+	im = cv2.blur(im, (23, 23))
+	filter_ = filterColors(hsvA)
+	filter_ = cv2.erode(filter_,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(8, 8)))
+	filter_ = cv2.dilate(filter_,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(6, 6)))
+
+	#Find object contours and get centroid cartesian positions       
+	contours,hierarchy= cv2.findContours(filter_,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+	tempIm=im.copy()
+	for cnt in contours:
+		M = cv2.moments(cnt)
+		#print M
+		#Identify centroid Cartesian coordinates
+		centroid_x = int(M['m10']/M['m00'])
+		centroid_y = int(M['m01']/M['m00'])
+		#Draw circle about centroids
+		cv2.circle(tempIm, (centroid_x, centroid_y), 20, (0,255,255), 10)
+			
+	#Send centroid location to Baxter arm for repositioning
+	#Needs more work	
+		
+	imOrig=cv2.add(imOrig,tempIm)
+	h, w = imOrig.shape[:2]
+	imgO= cv.CreateMat(h, w, cv.CV_8UC3)
+	np.asarray(imgO)[:,:] = imOrig
+
+	largeFrame=cv.CloneImage(imcolor)
+	cv.CvtColor(largeFrame,hsvC,cv.CV_BGR2HSV)
+		
+	cv.CvtColor(largeFrame,gray,cv.CV_BGR2GRAY)
+		
+	#imcolor=cv.QueryFrame(capture)
+	msg = cv_bridge.CvBridge().cv_to_imgmsg(imgO, "bgr8")
+	gui_pub.publish(msg)
+	cv.ShowImage('Chess',imgO)
 
 def clean_line(line, names):
 	
@@ -196,4 +196,5 @@ def try_float(x):
 
 if __name__ == '__main__':
 	rospy.init_node('baxter_chess_piece_detection', anonymous=True)
-	findPiece()
+	initCam()
+	getContours()
