@@ -110,6 +110,8 @@ class PythonChessMain:
 		print("Enabling robot... ")
 		rs.enable()
 		initCam()
+        	right = baxter_interface.Limb('right')
+        	grip_right = baxter_interface.Gripper('right')
 		
 		#gameSetupParams: Player 1 and 2 Name, Color, Human/AI level
 		if self.debugMode:
