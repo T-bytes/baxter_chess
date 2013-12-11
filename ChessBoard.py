@@ -22,7 +22,7 @@ import iodevices
 import time
 
 from MoveArmsIK import moveArmLoc
-from ImgProc import initCam, getContours, filterColors
+from ImgProc import findPiece, filterColors
 
 class ChessBoard:
 	def __init__(self,setupType=0):
@@ -34,6 +34,7 @@ class ChessBoard:
 				['e','e','e','e','e','e','e','e'],\
 				['e','e','e','e','e','e','e','e'],\
 				['e','e','e','e','e','e','e','e']]
+		findPiece()
 						
 		if setupType == 0:
 			self.squares[0] = ['bR','bT','bB','bQ','bK','bB','bT','bR']
@@ -123,23 +124,19 @@ class ChessBoard:
 		
 		#Give initial Cartesian coordinates to Baxter using fromSquare row and columns
 		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.275)
-		getContours()
 		time.sleep(1)
 		
 		#Pick up piece
 		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.33)
-		getContours()
 		time.sleep(1)
 		grip_right.close()
 		time.sleep(1)
 		
 		#Give final Cartesian coordinates to Baxter using toSquare row and columns
 		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.275)
-		getContours()
 		
 		#Drop piece
 		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.33)
-		getContours()
 		time.sleep(1)
 		grip_right.open()
 		
