@@ -22,7 +22,7 @@ import iodevices
 import time
 
 from MoveArmsIK import moveArmLoc
-import ImgProc
+from ImgProc import initCam, getContours, filterColors
 
 class ChessBoard:
 	def __init__(self,setupType=0):
