@@ -77,6 +77,8 @@ from ChessGUI_text import ChessGUI_text
 from ChessRules import ChessRules
 from ChessGameParams import TkinterGameSetupParams
 
+import ImgProc
+
 import argparse
 import sys
 
@@ -108,6 +110,7 @@ class PythonChessMain:
 		rs = baxter_interface.RobotEnable()
 		print("Enabling robot... ")
 		rs.enable()
+		initCam()
 		
 		#gameSetupParams: Player 1 and 2 Name, Color, Human/AI level
 		if self.debugMode:
