@@ -123,22 +123,23 @@ class ChessBoard:
 		
 		#Give initial Cartesian coordinates to Baxter using fromSquare row and columns
 		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.275)
+		getContours()
 		time.sleep(1)
-		
-		#Turn on camera and center on piece
-		
 		
 		#Pick up piece
 		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.33)
+		getContours()
 		time.sleep(1)
 		grip_right.close()
 		time.sleep(1)
 		
 		#Give final Cartesian coordinates to Baxter using toSquare row and columns
 		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.275)
+		getContours()
 		
 		#Drop piece
 		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.33)
+		getContours()
 		time.sleep(1)
 		grip_right.open()
 		
