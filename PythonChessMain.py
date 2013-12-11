@@ -76,6 +76,7 @@ from ChessGUI_text import ChessGUI_text
 #from ChessGUI_pygame import ChessGUI_pygame
 from ChessRules import ChessRules
 from ChessGameParams import TkinterGameSetupParams
+from ImgProc import findPiece, filterColors
 
 import argparse
 import sys
@@ -98,6 +99,7 @@ class PythonChessMain:
 			self.debugMode = False
 
 		self.Rules = ChessRules()
+		findPiece()
 		
 	def SetUp(self,options):
 		
