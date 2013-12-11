@@ -76,8 +76,7 @@ from ChessGUI_text import ChessGUI_text
 #from ChessGUI_pygame import ChessGUI_pygame
 from ChessRules import ChessRules
 from ChessGameParams import TkinterGameSetupParams
-
-import ImgProc
+from ImgProc import initCam
 
 import argparse
 import sys
