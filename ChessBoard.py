@@ -21,6 +21,10 @@ import baxter_interface
 import iodevices
 import time
 
+from baxter_msgs.msg import (
+    JointVelocities,
+    JointCommandMode,)
+
 from MoveArmsIK import moveArmLoc
 
 class ChessBoard:
@@ -121,25 +125,25 @@ class ChessBoard:
 		grip_right.open()
 		
 		#Give initial Cartesian coordinates to Baxter using fromSquare row and columns
-		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.275)
+		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.20)
 		time.sleep(1)
 		
 		#Pick up piece
-		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.33)
+		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.32)
 		time.sleep(1)
 		grip_right.close()
 		time.sleep(1)
 		
 		#Give final Cartesian coordinates to Baxter using toSquare row and columns
-		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.275)
+		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.20)
 		
 		#Drop piece
-		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.33)
+		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.32)
 		time.sleep(1)
 		grip_right.open()
 		
 		#Return to home position
-		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.275)
+		moveArmLoc('right', self.GetCartesian_col(toSquare_c), self.GetCartesian_row(toSquare_r), -0.20)
 		right.move_to_neutral()
 		
 		#Assign square positions for from and to pieces
