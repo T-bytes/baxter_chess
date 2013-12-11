@@ -26,6 +26,7 @@ from baxter_msgs.msg import (
     JointCommandMode,)
 
 from MoveArmsIK import moveArmLoc
+from ImgProc import findPiece, filterColors
 
 class ChessBoard:
 	def __init__(self,setupType=0):
@@ -129,6 +130,7 @@ class ChessBoard:
 		time.sleep(1)
 		
 		#Pick up piece
+		findPiece()
 		moveArmLoc('right', self.GetCartesian_col(fromSquare_c), self.GetCartesian_row(fromSquare_r), -0.32)
 		time.sleep(1)
 		grip_right.close()
