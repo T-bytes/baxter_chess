@@ -22,7 +22,6 @@ import iodevices
 import time
 
 from MoveArmsIK import moveArmLoc
-from ImgProc import findPiece, filterColors
 
 class ChessBoard:
 	def __init__(self,setupType=0):
@@ -34,7 +33,6 @@ class ChessBoard:
 				['e','e','e','e','e','e','e','e'],\
 				['e','e','e','e','e','e','e','e'],\
 				['e','e','e','e','e','e','e','e']]
-		findPiece()
 						
 		if setupType == 0:
 			self.squares[0] = ['bR','bT','bB','bQ','bK','bB','bT','bR']
