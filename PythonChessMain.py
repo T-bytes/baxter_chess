@@ -76,7 +76,6 @@ from ChessGUI_text import ChessGUI_text
 #from ChessGUI_pygame import ChessGUI_pygame
 from ChessRules import ChessRules
 from ChessGameParams import TkinterGameSetupParams
-from ImgProc import initCam
 
 import argparse
 import sys
@@ -109,7 +108,6 @@ class PythonChessMain:
 		rs = baxter_interface.RobotEnable()
 		print("Enabling robot... ")
 		rs.enable()
-		initCam()
         	right = baxter_interface.Limb('right')
         	grip_right = baxter_interface.Gripper('right')
 		
