@@ -122,6 +122,8 @@ def inverse_kinematics(limb, x_p, y_p, z_p, x_o, y_o, z_o, w_o):
 
 def moveArmLoc(limb, x_p, y_p, z_p, x_o = -0.037, y_o = 0.999, z_o = -0.015, w_o = -0.010):
 	#Utilizes default vertical orientation for the right arm wrist
+	left = baxter_interface.Limb('left')
+	right = baxter_interface.Limb('right')
 	
 	if (inverse_kinematics(limb, x_p, y_p, z_p, x_o, y_o, z_o, w_o) == '0'):
 		print("Invalid coordinates specified:")
