@@ -28,7 +28,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 """------------------------------------------------------------------------
-File:	MoveArmsIK.py
+File:	ImgProc.py
 
 Author:	Trevor Sands
 	for EEEE 585, Rochester Institute of Technology
